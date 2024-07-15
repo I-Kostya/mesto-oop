@@ -44,3 +44,63 @@ npm run build
 ```
 yarn build
 ```
+
+## данные и типы данных, используемые в приложении
+
+Карточка
+
+```ts
+interface ICard {
+	likes: IUser[];
+	_id: string;
+	name: string;
+	link: string;
+	owner: IUser;
+	createdAt: Date;
+}
+```
+
+Пользователь
+
+```ts
+interface IUser {
+	name: string;
+	about: string;
+	avatar: string;
+	_id: string;
+	cohort: string;
+}
+```
+
+Интерфейс для модели данных карточек
+
+```ts
+export interface ICardsData {
+	cards: ICard[];
+	preview: string | null;
+}
+```
+
+Данные карточки, используемые в форме при создании новой карточки
+
+```ts
+export type TCardInfo = Pick<ICard, 'name' | 'link'>;
+```
+
+Основные данные пользователя, которые можно редактировать
+
+```ts
+export type TUserPublicInfo = Pick<IUser, 'name' | 'about' | 'avatar'>;
+```
+
+Данные пользователя в форме редактирования профиля
+
+```ts
+export type TUserBaseInfo = Pick<IUser, 'name' | 'about'>;
+```
+
+Аватар пользователя
+
+```ts
+export type TUserAvatar = Pick<IUser, 'avatar'>;
+```
