@@ -18,6 +18,17 @@ interface IUser {
 export interface ICardsData {
   cards: ICard[];
   preview: string | null;
+  addCard(card: ICard): void;
+  deleteCard(cardId: string, payload: Function | null): void;
+  updateCard(card: ICard, payload: Function | null): void;
+  getCard(cardId: string): ICard;
+  checkValidation(data: Record<keyof TCardInfo, string>): boolean;
+}
+
+export interface IUserData {
+  getUserInfo(): TUserPublicInfo;
+  setUserInfo(userData: IUser): void;
+  checkUserValidation(data: Record<keyof TUserPublicInfo, string>): boolean;
 }
 
 export type TCardInfo = Pick<ICard, 'name' | 'link'>;
