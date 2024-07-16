@@ -56,7 +56,7 @@ interface ICard {
 	name: string;
 	link: string;
 	owner: IUser;
-	createdAt: Date;
+	createdAt: string;
 }
 ```
 
@@ -130,6 +130,7 @@ export type TUserAvatar = Pick<IUser, 'avatar'>;
 
 ### Слой данных
 
+
 #### Класс CardsData
 Класс отвечает за хранение и логику работы с данными карточек созданных пользователями.\
 Конструктор класса принимает инстант брокера событий\
@@ -144,6 +145,9 @@ export type TUserAvatar = Pick<IUser, 'avatar'>;
 - updateCard(card: ICard, payload: Function | null = null): void - обновляет данные карточки в массиве. Если передан колбэк, то выполняет его после обновления, если нет, то вызывает событие изменения массива.
 - getCard(cardId: string): ICard - возвращает карточку по ее id
 - checkValidation(data: Record<keyof TCardInfo, string>): boolean - проверяет объект с данными карточки на валидность
+- checkField(data: { field: keyof TCardInfo; value: string }): boolean - метод определяет валидность одного из свойств данных карточки 
+- checkName(value: string): boolean - метод определяет валидность названия карточки 
+- checkLink(value: string): boolean - метод определяет валидность ссылки на картинку карточки
 - а так-же сеттеры и геттеры для сохранения и получения данных из полей класса
 
 #### Класс UserData
@@ -160,7 +164,12 @@ export type TUserAvatar = Pick<IUser, 'avatar'>;
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 - getUserInfo(): TUserPublicInfo - возвращает основные данные пользователя отображаемые на сайте
 - setUserInfo(userData: IUser): void - сохраняет данные пользователя в классе
-- checkValidation(data: Record<keyof TUserPublicInfo, string>): boolean - проверяет объект с данными пользователя на валидность
+- checkUserValidation(data: Record<keyof TUserPublicInfo, string>): boolean - проверяет объект с данными пользователя на валидность
+- checkAvatarValidation(data: Record<keyof TUserPublicInfo, string>): boolean - проверяет объект с аватаром пользователя на валидность
+- checkField(data: { field: keyof TUserPublicInfo; value: string }): boolean - метод определяет валидность одного из свойств пользователя 
+- checkName(value: string): boolean - метод определяет валидность имени пользователя
+- checkAbout(value: string) : boolean - метод определяет валидность дополнительной информации о пользователе
+- checkAvatar(value: string): boolean - метод определяет валидность ссылки на аватар пользователя
 
 ### Классы представления
 Все классы представления отвечают за отображение внутри контейнера (DOM-элемент) передаваемых в них данных.

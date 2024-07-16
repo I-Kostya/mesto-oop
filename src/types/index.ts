@@ -1,13 +1,13 @@
-interface ICard {
+export interface ICard {
   likes: IUser[];
   _id: string;
   name: string;
   link: string;
   owner: IUser;
-  createdAt: Date;
+  createdAt: string;
 }
 
-interface IUser {
+export interface IUser {
   name: string;
   about: string;
   avatar: string;
