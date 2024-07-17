@@ -36,5 +36,7 @@ Promise.all([api.getUser(), api.getCards()])
 
   const testSection = document.querySelector('.places');
   const card = new Card(cardTemplate, events);
-  card.setData(testCards[0], testUser._id)
-  testSection.append(card.render());
+  
+  testSection.append(card.render(testCards[0], testUser._id));
+
+  card.render({name: 'Наша карточка'}, '')
