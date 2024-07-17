@@ -1,8 +1,7 @@
 import validate from 'validate.js';
-import { ICard, TCardInfo } from './../../types/index';
-import { ICardsData } from '../../types';
-import { IEvents } from './events';
-import { constraintsCard } from '../../utils/constants';
+import { ICardsData, ICard, TCardInfo } from '../types';
+import { constraintsCard } from '../utils/constants';
+import { IEvents } from './base/events';
 
 export class CardData implements ICardsData {
   protected _cards: ICard[];

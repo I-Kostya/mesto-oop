@@ -1,4 +1,5 @@
-import { IApi, ICard, IUser, TCardInfo, TUserAvatar, TUserBaseInfo } from "../../types";
+import { IApi, ICard, IUser, TCardInfo, TUserBaseInfo, TUserAvatar } from '../types';
+
 
 
 export class AppApi {

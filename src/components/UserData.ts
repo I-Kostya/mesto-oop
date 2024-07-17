@@ -1,7 +1,7 @@
 import validate from 'validate.js';
-import { IUser, IUserData, TUserPublicInfo } from '../../types';
-import { IEvents } from './events';
-import { constraintsAvatar, constraintsUser } from '../../utils/constants';
+import { IUserData, TUserPublicInfo, IUser } from '../types';
+import { constraintsUser, constraintsAvatar } from '../utils/constants';
+import { IEvents } from './base/events';
 
 export class UserData implements IUserData {
   protected name: string;
