@@ -1,6 +1,7 @@
 import './blocks/index.css';
 import { AppApi } from './components/AppApi';
 import { Card } from './components/Card';
+import { CardsContainer } from './components/CardsContainer';
 import { CardData } from './components/CardsData';
 import { UserData } from './components/UserData';
 
@@ -9,6 +10,7 @@ import { EventEmitter } from './components/base/events';
 import { IApi } from './types';
 import { API_URL, settings } from './utils/constants';
 import { testCards, testUser } from './utils/tempConstants';
+import { cloneTemplate } from './utils/utils';
 
 const events = new EventEmitter();
 
@@ -20,6 +22,8 @@ const userData = new UserData(events);
 
 
 const cardTemplate: HTMLTemplateElement = document.querySelector('.card-template');
+
+const cardsContainer = new CardsContainer(document.querySelector('.places__list'));
 
 events.onAll((event) => {
   console.log(event.eventName, event.data);
@@ -34,9 +38,10 @@ Promise.all([api.getUser(), api.getCards()])
     console.error(err);
   });
 
-  const testSection = document.querySelector('.places');
-  const card = new Card(cardTemplate, events);
-  
-  testSection.append(card.render(testCards[0], testUser._id));
+  const card = new Card(cloneTemplate(cardTemplate), events);
+  const card1 = new Card(cloneTemplate(cardTemplate), events);
+  const cardArray = [];
+  cardArray.push(card.render(testCards[0], testUser._id));
+  cardArray.push(card1.render(testCards[1], testUser._id));
 
-  card.render({name: 'Наша карточка'}, '')
+  cardsContainer.render({catalog: cardArray});

@@ -1,11 +1,10 @@
 import { ICard, IUser } from '../types';
-import { cloneTemplate } from '../utils/utils';
+import { Component } from './base/Component';
 import { IEvents } from './base/events';
 
 
 
-export class Card {
-  protected element: HTMLElement;
+export class Card extends Component<ICard> {
   protected events: IEvents;
   protected likeButton: HTMLButtonElement;
   protected likesCounts: HTMLElement;
@@ -15,15 +14,15 @@ export class Card {
   protected cardId: string;
 
 
-  constructor(template: HTMLTemplateElement, events: IEvents) {
+  constructor(protected container: HTMLElement, events: IEvents) {
+    super(container);
     this.events = events;
-    this.element = cloneTemplate(template);
 
-    this.likeButton = this.element.querySelector('.card__like-button');
-    this.likesCounts = this.element.querySelector('.card__like-count');
-    this.deleteButton = this.element.querySelector('.card__delete-button');
-    this.cardImage = this.element.querySelector('.card__image');
-    this.cardTitle = this.element.querySelector('.card__title');
+    this.likeButton = this.container.querySelector('.card__like-button');
+    this.likesCounts = this.container.querySelector('.card__like-count');
+    this.deleteButton = this.container.querySelector('.card__delete-button');
+    this.cardImage = this.container.querySelector('.card__image');
+    this.cardTitle = this.container.querySelector('.card__title');
 
     this.cardImage.addEventListener('click', () => {
       this.events.emit('card:select', { card: this });
@@ -42,22 +41,29 @@ export class Card {
     return this.likeButton.classList.contains('card__like-button_is-active');
   }
 
-  render(cardData: Partial<ICard>, userId: string) {
-    const { likes, owner, ...otherCardData} = cardData;
-    if(likes) this.likes = { likes, userId };
-    if(owner) this.owner = { owner, userId };
-    Object.assign(this, otherCardData);
-    return this.element;
+  render(data?: Partial<ICard>): HTMLElement;
+  render(cardData: Partial<ICard>, userId: string): HTMLElement;
+
+  render(cardData: Partial<ICard> | undefined, userId?: string) {
+
+    if (!cardData) return this.container;
+
+    const { likes, owner, ...otherCardData } = cardData;
+    if (userId) {
+      if (likes) this.likes = { likes, userId };
+      if (owner) this.owner = { owner, userId };
+    }
+    return super.render(otherCardData);
   }
 
-  set likes({ likes, userId}: { likes: IUser[], userId: string }) {
+  set likes({ likes, userId }: { likes: IUser[], userId: string; }) {
     const cardIsLikes = likes.some((like) => like._id === userId);
     this.likeButton.classList.toggle('card__like-button_is-active', cardIsLikes);
     this.likesCounts.textContent = String(likes.length);
   }
 
-  set owner({ owner, userId}: { owner: IUser, userId: string }) {
-    if(owner._id !== userId) {
+  set owner({ owner, userId }: { owner: IUser, userId: string; }) {
+    if (owner._id !== userId) {
       this.deleteButton.style.display = 'none';
     } else {
       this.deleteButton.style.display = 'inherit';
@@ -67,7 +73,7 @@ export class Card {
   set link(link: string) {
     this.cardImage.style.backgroundImage = `url(${link})`;
   }
- 
+
 
   set name(name: string) {
     this.cardTitle.textContent = name;
@@ -82,19 +88,7 @@ export class Card {
   }
 
   deleteCard() {
-    this.element.remove();
-    this.element = null;
+    this.container.remove();
+    this.container = null;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
